@@ -18,7 +18,7 @@ body{
 header{
   position: relative;
   width: 375px;
-  margin: 30px auto 0;
+  margin: 30px auto 35px;
   padding: 10px 0;
   .navbar{
     display: flex;
@@ -35,8 +35,8 @@ header{
 .hamburger{
   position: relative;
   overflow: hidden;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 29px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -44,7 +44,7 @@ header{
   z-index: 10;
   .hamburger-item{
     width: 100%;
-    height: 2px;
+    height: 1px;
     display: block;
     background: #ffffff;
     transition: .2s linear;
@@ -119,8 +119,9 @@ header{
 main{
   width: 375px;
   margin: 0 auto;
+  overflow: hidden;
 }
-.content{
+.header-content{
   margin: 0 30px;
   h2{
     font-size: 20px;
@@ -129,4 +130,64 @@ main{
     font-size: 12px;
     line-height: 1.5;
   }
+}
+.center-content{
+  margin: 160px 105px 50px;
+  p{
+    font-size: 20px;
+    font-weight: regular;
+    color: #ffd7f1;
+  }
+}
+.current-year-and-deckription{
+  position: relative;
+  margin: 0 0 50px 0;
+}
+.circle{
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  left: 50%;
+  transform: translate(-50%, -30px);
+  border-radius: 50%;
+  border: 1px solid #1c1c1c;
+
+}
+.gradient-text {
+  font-size: 55px;
+  letter-spacing: 6px;
+  font-family: Poppins;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ffade2 33%, #e22bb8 66%, #c22ac5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #000000;
+  margin: 0 0 0 100px;
+}
+.deckription{
+  padding: 0 88px 0 100px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 14px;
+  color: #d0afc4;
+}
+.roll{
+  height: 150px;
+}
+#wrap {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  border-radius: 50%;
+  border: 1px solid #d5d5d5;
+  transition: .3s linear;
+  box-sizing: border-box;
+  margin: 100px 0;
+}
+
+#wrap span {
+  position: absolute;
+  transform: translate(-30px, -30px);
 }

@@ -28,3 +28,29 @@ hamburger.addEventListener('click', () => {
     shadowOn();
     }
 })
+
+
+window.onload = function () {
+    var allSpan = document.querySelectorAll('#wrap span');
+    var container = document.querySelector('#wrap');
+    var num = allSpan.length; // Колличество span
+    var wrap = (container.offsetWidth / 2) + 30; // Размер "холста" для расположения картинок
+    var radius = (container.offsetWidth / 2) + 30; // Радиус нашего круга
+
+
+    for (i = 0; i < num; i++){
+        var f = 2 / num * i * Math.PI;  // Рассчитываем угол каждой картинки в радианах
+        var rotateDeg = 360 / num; // шаг поворота
+        var deg = (90 - ( i * rotateDeg )) + 'deg';
+
+        var left = wrap + radius * Math.sin(f) + 'px';
+        var top = wrap + radius * Math.cos(f) + 'px';
+
+        allSpan[i].style.left = left;
+        allSpan[i].style.top = top;
+        allSpan[i].style.transform = `translate(-48px, -40px) rotate(${deg})`;
+        ;
+
+    }
+}
+
