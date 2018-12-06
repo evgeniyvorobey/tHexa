@@ -1,3 +1,6 @@
+console.log('-----------Тестовое задание сделал Евгений Воробей')
+
+
 var shadow = document.querySelector('.shadow');
     hamburger = document.querySelector('.hamburger');
     navbar = document.querySelector('.navbar');
@@ -71,7 +74,6 @@ allSpan.forEach(item => {
     item.addEventListener('click', function (e) {
 
         if (document.body.clientWidth >= 768){
-            console.log(e)
             clearAllActivClass();
 
             var rotate = item.getAttribute('rotate');
