@@ -377,6 +377,7 @@ footer{
   }
   .description {
     font-size: 16px;
+    line-height: 2;
   }
   .current-year-and-description {
     width: 353px;
@@ -415,10 +416,11 @@ footer{
   }
   .header-content h2, footer h3{
     font-size: 30px;
-    font-weight: 600;
+    font-weight: 500;
   }
   .header-content p, footer p {
     font-size: 16px;
+    line-height: 1.5;
   }
   .center-content p {
     font-size: 40px;

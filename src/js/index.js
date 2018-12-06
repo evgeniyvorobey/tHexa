@@ -36,10 +36,10 @@ var container = document.querySelector('#wrap');
 var num = allSpan.length; // Колличество span
 var wrap = (container.offsetWidth / 2) + 30; // Размер "холста" для расположения картинок
 var radius = (container.offsetWidth / 2) + 30; // Радиус нашего круга
+var rotateDeg = 360 / num; // Шаг поворота
 
 for (i = 0; i < num; i++) {
     var f = 2 / num * i * Math.PI;  // Угол елемента в радианах
-    var rotateDeg = 360 / num; // Шаг поворота
     var deg = (90 - (i * rotateDeg)) + 'deg'; //Угол
     var toThisItemRotate = 180 + ( i * rotateDeg ); // transition: rotate до елемента
     var left = wrap + radius * Math.sin(f) + 'px';
@@ -68,9 +68,10 @@ var setInfo = () => {
 
 // click listener
 allSpan.forEach(item => {
-    item.addEventListener('click', function () {
+    item.addEventListener('click', function (e) {
 
         if (document.body.clientWidth >= 768){
+            console.log(e)
             clearAllActivClass();
 
             var rotate = item.getAttribute('rotate');
@@ -88,7 +89,52 @@ allSpan.forEach(item => {
 
 
 
+// var activeElement = document.querySelector('.active');
+var nextFunc = () => {
+    var activeElement = document.querySelector('.active');
 
+    if (activeElement.previousElementSibling){
+        clearAllActivClass();
+        activeElement.previousElementSibling.classList.add('active');
+    } else {
+        clearAllActivClass();
+        allSpan[allSpan.length-1].classList.add('active');
+    }
+}
+
+var prevFunc = () => {
+    var activeElement = document.querySelector('.active');
+
+    if (activeElement.nextElementSibling){
+        clearAllActivClass();
+        activeElement.nextElementSibling.classList.add('active');
+    } else {
+        clearAllActivClass();
+        allSpan[0].classList.add('active');
+    }
+}
+
+var nextEl = () => {
+    var style = container.style.transform.split('rotate(')[1];
+    if ( style ) {
+        style.toString().split('deg')[0];
+        next = parseInt(style) - rotateDeg;
+    } else {
+        next = 180 - rotateDeg;
+    }
+    document.querySelector('#wrap').style.transform = `translateX(-50%) rotate(${next}deg)`;
+
+}
+var prevEl = () => {
+    var style = container.style.transform.split('rotate(')[1];
+    if(style) {
+        style.toString().split('deg')[0];
+        next = parseInt(style) + rotateDeg;
+    } else {
+        next = 180 + rotateDeg;
+    }
+    document.querySelector('#wrap').style.transform = `translateX(-50%) rotate(${next}deg)`;
+}
 
 //wheel listener
 var scrollContainer = document.querySelector('.roll');
@@ -97,67 +143,24 @@ scrollContainer.addEventListener('mouseover', e => {
 
     if (document.body.clientWidth >= 1366) {
         window.onscroll = function (e) {
-            var x=window.scrollX;
-            var y=window.scrollY;
+            var x = window.scrollX;
+            var y = window.scrollY;
             window.onscroll = () => window.scrollTo(x, y);
         };
 
         scrollContainer.addEventListener('wheel', e => {
             var wheel = e.deltaY;
-            var style = container.style.transform.split('rotate(')[1];
+            // var style = container.style.transform.split('rotate(')[1];
 
-            var nextEl = () => container.style.transform = `translateX(-50%) rotate(${next}deg)`;
-            var prevEl = () => container.style.transform = `translateX(-50%) rotate(${next}deg)`;
             var activeElement = document.querySelector('.active');
-
-            var nextFunc = () => {
-                if (activeElement.previousElementSibling){
-                    clearAllActivClass();
-                    activeElement.previousElementSibling.classList.add('active');
-                } else {
-                    clearAllActivClass();
-                    allSpan[allSpan.length-1].classList.add('active');
-                }
-            }
-            var prevFunc = () => {
-                if (activeElement.nextElementSibling){
-                    clearAllActivClass();
-                    activeElement.nextElementSibling.classList.add('active');
-                } else {
-                    clearAllActivClass();
-                    allSpan[0].classList.add('active');
-                }
-            }
-            if ( wheel > 1) {
-                if (style) {
+            if ( wheel > 5) {
                     nextFunc();
                     setInfo();
-                    style.toString().split('deg')[0];
-                    next = parseInt(style) - rotateDeg;
                     nextEl();
-                } else {
-                    nextFunc();
-                    setInfo();
-                    next = 180 - rotateDeg;
-                    nextEl();
-                }
-            } else if (wheel < -1) {
-                if (style) {
+            } else if (wheel < -5) {
                     prevFunc();
                     setInfo();
-                    style.toString().split('deg')[0];
-                    next = parseInt(style) + rotateDeg;
-                    if (document.body.clientWidth >= 1920){
-                        console.log('----1920')
-                    }
-                    container.style.transform = `translateX(-50%) rotate(${next}deg)`
                     prevEl();
-                } else {
-                    prevFunc();
-                    setInfo();
-                    next = 180 + rotateDeg;
-                    prevEl();
-                }
             } else {
                 return
             }
@@ -165,42 +168,69 @@ scrollContainer.addEventListener('mouseover', e => {
     }
 })
 
-
 scrollContainer.addEventListener('mouseout', e => {
     window.onscroll=function(){};
 })
 
-scrollContainer.addEventListener('touchstart', function (e) {
-    console.log('--start',e.changedTouches[0])
+
+
+
+
+//---------------------touch listener
+var startX,
+    startY,
+    left = -100,
+    right = 100,
+    dist,
+    startTime
+
+function handleSwipe(dist) {
+    var activeElement = document.querySelector('.active');
+    var style = container.style.transform.split('rotate(')[1];
+    setInfo();
+    if (dist > right){
+        nextFunc();
+        nextEl();
+    } else if (dist < left) {
+        prevFunc();
+        prevEl();
+    } else {
+    return}
+}
+
+scrollContainer.addEventListener('touchstart', e => {
+    var touchobj = e.changedTouches[0]
+    startX = touchobj.pageX
+    startY = touchobj.pageY
+    e.preventDefault()
 })
-scrollContainer.addEventListener('touchend', function (e) {
-    console.log('--end',e.changedTouches[0])
+
+scrollContainer.addEventListener('touchmove', e => {
+    e.preventDefault()
 })
-// scrollContainer.addEventListener('touchsmove', function (e) {
-//     console.log('--move',e)
-// })
-// scrollContainer.addEventListener('touchccansel', function (e) {
-//     console.log('--cansel',e)
-// })
-// scrollContainer.addEventListener('swipe', function (e) {
-//     console.log('--swipe',e)
-// })
+
+scrollContainer.addEventListener('touchend', e => {
+    var touchobj = e.changedTouches[0]
+    dist = touchobj.pageX - startX
+    handleSwipe(dist)
+    e.preventDefault()
+})
 
 
 
 
-document.onscroll = function(e) {
-    // if (e.target.classList.contains('roll') return;
-    // var area = e.target;
-    //
-    // var delta = e.deltaY || e.detail || e.wheelDelta;
-    // console.log(e);
-    //
-    // if (delta < 0 && area.scrollTop == 0) {
-    //     e.preventDefault();
-    // }
-    //
-    // if (delta > 0 && area.scrollHeight - area.clientHeight - area.scrollTop <= 1) {
-    //     e.preventDefault();
-    // }
-};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
